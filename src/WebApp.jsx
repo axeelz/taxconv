@@ -51,7 +51,14 @@ function WebApp() {
         }}>
         <Space direction="vertical" size="large" style={{ width: 320 }}>
           <Title level={2}>Enter the amount</Title>
-          <Input size="large" placeholder="50" onChange={(e) => setInput(e.target.value)} addonAfter="CA$" />
+          <Input
+            size="large"
+            placeholder="50"
+            onChange={(e) => setInput(e.target.value)}
+            addonAfter="CA$"
+            pattern="[0-9]*"
+            inputMode="decimal"
+          />
           <Switch
             checkedChildren="Include tax"
             unCheckedChildren="Exclude tax"
