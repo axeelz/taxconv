@@ -56,6 +56,7 @@ function WebApp() {
             placeholder="50"
             onChange={(e) => setInput(e.target.value)}
             addonAfter="CA$"
+            type="number"
             pattern="[0-9]*"
             inputMode="decimal"
           />
