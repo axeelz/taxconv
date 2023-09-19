@@ -54,11 +54,11 @@ function WebApp() {
           <Input
             size="large"
             placeholder="50"
-            onChange={(e) => setInput(e.target.value)}
+            onChange={(e) => setInput(e.target.value.replace(",", "."))}
             addonAfter="CA$"
-            type="number"
+            type="text"
             inputMode="decimal"
-            step="0.01"
+            pattern="^\d+(\.|\,)\d{2}$"
           />
           <Switch
             checkedChildren="Include tax"
