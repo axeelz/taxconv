@@ -54,6 +54,7 @@ function WebApp() {
           <Input
             type="number"
             inputMode="decimal"
+            step="0.01"
             size="large"
             placeholder="50"
             onChange={(e) => setInput(e.target.value)}
@@ -71,7 +72,7 @@ function WebApp() {
               width: "100%",
               justifyContent: "flex-start",
               flexWrap: "wrap",
-              opacity: input > 0 || input.includes(".") ? 1 : 0,
+              opacity: input > 0 ? 1 : 0,
               transition: "opacity 0.3s ease-in-out",
             }}
             size="large">
