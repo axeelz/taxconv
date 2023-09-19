@@ -54,10 +54,9 @@ function WebApp() {
           <Input
             size="large"
             placeholder="50"
-            onChange={(e) => setInput(e.target.value)}
+            onChange={(e) => setInput(e.target.value.replace(/,/g, "."))}
             addonAfter="CA$"
             type="number"
-            pattern="[0-9]*"
             inputMode="decimal"
           />
           <Switch
