@@ -53,6 +53,7 @@ function WebApp() {
           <Title level={2}>Enter the amount</Title>
           <Input
             type="number"
+            inputMode="decimal"
             size="large"
             placeholder="50"
             onChange={(e) => setInput(e.target.value)}
