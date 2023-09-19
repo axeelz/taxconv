@@ -57,6 +57,7 @@ function WebApp() {
             onChange={(e) => setInput(e.target.value)}
             addonAfter="CA$"
             inputMode="decimal"
+            lang="en-US"
           />
           <Switch
             checkedChildren="Include tax"
