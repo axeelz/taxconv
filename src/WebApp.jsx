@@ -46,7 +46,7 @@ function WebApp() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          height: "80vh",
+          height: "75vh",
           width: "100vw",
         }}>
         <Space direction="vertical" size="large" style={{ width: 320 }}>
@@ -93,7 +93,13 @@ function WebApp() {
           </Space>
         </Space>
       </div>
-      <div style={{ textAlign: "center", width: "100%" }}>
+      <div style={{ maxWidth: 320, margin: "0 auto", paddingBottom: 10 }}>
+        <Text type="secondary">
+          This is a simple tool for European travelers in Quebec that helps converting prices from Canadian dollars to
+          euros while taking into account the Quebec tax rate.
+        </Text>
+      </div>
+      <div style={{ maxWidth: 320, margin: "0 auto" }}>
         Quebec tax rate = <Text code>14,975 %</Text> <br /> 1 CA$ = <Text code>{displayedRate} €</Text>
       </div>
     </App>
