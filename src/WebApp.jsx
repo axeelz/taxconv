@@ -1,43 +1,30 @@
 import { useState, useEffect } from "react";
-import { App, Card, Input, Space, Statistic, Switch, Typography } from "antd";
+import { App, Card, Input, Select, Space, Statistic, Switch, Typography } from "antd";
 
 const { Title, Text } = Typography;
 
+const PROVINCES = {
+  QC: { code: "QC", name: "Quebec", taxPercent: 14.975 },
+  BC: { code: "BC", name: "British Columbia", taxPercent: 12 },
+};
+
 function WebApp() {
   const [input, setInput] = useState(0);
-  const [result, setResult] = useState(0);
   const [rate, setRate] = useState(0);
-  const [priceWithTax, setPriceWithTax] = useState(0);
   const [includeTax, setIncludeTax] = useState(true);
+  const [province, setProvince] = useState("BC");
 
-  const displayedPriceWithTax = priceWithTax.toFixed(2);
-  const displayedResult = result.toFixed(2);
-  const displayedRate = rate.toFixed(4);
+  const selectedProvince = PROVINCES[province];
+  const taxMultiplier = 1 + selectedProvince.taxPercent / 100;
+  const priceWithTax = input * taxMultiplier;
+  const result = (includeTax ? priceWithTax : input) * rate;
 
   useEffect(() => {
-    // Get rate from API when component is mounted
     fetch("https://open.er-api.com/v6/latest/CAD")
       .then((res) => res.json())
-      .then((data) => {
-        // Set result to the rate
-        setRate(data.rates.EUR);
-        console.log("Rate fetched from API " + data.rates.EUR);
-      });
+      .then((data) => setRate(data.rates.EUR))
+      .catch(console.error);
   }, []);
-
-  useEffect(() => {
-    // Add 14,975% tax to input
-    setPriceWithTax(input * 1.14975);
-  }, [input]);
-
-  useEffect(() => {
-    // Calculate result when input or rate changes
-    if (includeTax) {
-      setResult(priceWithTax * rate);
-    } else {
-      setResult(input * rate);
-    }
-  }, [priceWithTax, rate, includeTax]);
 
   return (
     <App>
@@ -56,18 +43,24 @@ function WebApp() {
           <Input
             size="large"
             placeholder="50"
-            onChange={(e) => setInput(e.target.value.replace(",", "."))}
+            onChange={(e) => {
+              const normalized = parseFloat(e.target.value.replace(",", "."));
+              setInput(Number.isFinite(normalized) ? normalized : 0);
+            }}
             addonAfter="CA$"
             type="text"
             inputMode="decimal"
-            pattern="^\d+(\.|\,)\d{2}$"
           />
-          <Switch
-            checkedChildren="Add tax"
-            unCheckedChildren="Exclude tax"
-            defaultChecked
-            onChange={(checked) => setIncludeTax(checked)}
+          <Select
+            size="large"
+            value={province}
+            onChange={setProvince}
+            options={Object.values(PROVINCES).map((p) => ({
+              value: p.code,
+              label: `${p.name} (${p.code})`,
+            }))}
           />
+          <Switch checkedChildren="Add tax" unCheckedChildren="Exclude tax" defaultChecked onChange={setIncludeTax} />
           <Space
             style={{
               alignItems: "center",
@@ -80,14 +73,14 @@ function WebApp() {
             size="large">
             {includeTax ? (
               <>
-                <Statistic title="Price + tax" value={`${displayedPriceWithTax} CA$`} />
+                <Statistic title="Price + tax" value={`${priceWithTax.toFixed(2)} CA$`} />
                 <Card bordered={true}>
-                  <Statistic title={`$${displayedPriceWithTax} in €`} value={`${displayedResult} €`} />
+                  <Statistic title={`$${priceWithTax.toFixed(2)} in €`} value={`${result.toFixed(2)} €`} />
                 </Card>
               </>
             ) : (
               <Card bordered={true}>
-                <Statistic title={`$${input} in €`} value={`${displayedResult} €`} />
+                <Statistic title={`$${input} in €`} value={`${result.toFixed(2)} €`} />
               </Card>
             )}
           </Space>
@@ -95,12 +88,13 @@ function WebApp() {
       </div>
       <div style={{ maxWidth: 320, margin: "0 auto", paddingBottom: 10 }}>
         <Text type="secondary">
-          This is a simple tool for European travelers in Quebec that helps converting prices from Canadian dollars to
-          euros while taking into account the Quebec tax rate.
+          This is a simple tool for European travelers in Canada that helps converting prices from Canadian dollars to
+          euros while taking into account the provincial tax rate.
         </Text>
       </div>
       <div style={{ maxWidth: 320, margin: "0 auto" }}>
-        Quebec tax rate = <Text code>14,975 %</Text> <br /> 1 CA$ = <Text code>{displayedRate} €</Text>
+        {selectedProvince.name} tax rate = <Text code>{selectedProvince.taxPercent}%</Text> <br /> 1 CA$ ={" "}
+        <Text code>{rate.toFixed(4)} €</Text>
       </div>
     </App>
   );
