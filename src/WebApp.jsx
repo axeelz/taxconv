@@ -33,7 +33,7 @@ function WebApp() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          height: "75vh",
+          height: "70vh",
           width: "100vw",
         }}>
         <Space direction="vertical" size="large" style={{ width: 320 }}>
