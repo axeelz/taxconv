@@ -3,17 +3,113 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CAD to EUR with Provincial Tax Converter 🇨🇦</title>
+    <meta name="theme-color" content="#f5f5f7" />
+    <title>CAD to EUR Tax Calculator for Canada</title>
     <meta
       name="description"
-      content="Very simple CAD ($ CA) to EUR (€) converter including provincial tax (Quebec or British Columbia). Get conversion and tax at once to avoid surprises." />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="manifest" href="/site.webmanifest" />
+      content="Convert Canadian prices from CAD to EUR with provincial sales tax for British Columbia, Ontario and Quebec. Built for travellers in Canada." />
+    <link rel="apple-touch-icon" sizes="180x180" href="/public/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/public/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/public/favicon-16x16.png" />
+    <link rel="manifest" href="/public/site.webmanifest" />
+    <link rel="stylesheet" href="/src/index.css" />
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <main class="app-shell">
+      <section class="converter" aria-labelledby="page-title">
+        <header class="intro">
+          <h1 id="page-title" aria-label="CAD to EUR" translate="no">
+            CAD <span aria-hidden="true">→</span> EUR
+          </h1>
+          <p class="lede">
+            Convert Canadian prices to euros, including sales tax in British Columbia, Ontario and Quebec.
+          </p>
+        </header>
+
+        <div class="calculator-card">
+          <label class="field-label" for="amount">Price on the tag</label>
+          <div class="amount-field">
+            <input
+              id="amount"
+              name="amount"
+              type="text"
+              inputmode="decimal"
+              autocomplete="off"
+              placeholder="0.00"
+              aria-describedby="amount-currency" />
+            <span id="amount-currency" translate="no">CA$</span>
+          </div>
+
+          <fieldset class="province-picker">
+            <legend>Province</legend>
+            <div class="segments">
+              <label>
+                <input type="radio" name="province" value="BC" checked />
+                <span>BC</span>
+                <small>British Columbia</small>
+              </label>
+              <label>
+                <input type="radio" name="province" value="ON" />
+                <span>ON</span>
+                <small>Ontario</small>
+              </label>
+              <label>
+                <input type="radio" name="province" value="QC" />
+                <span>QC</span>
+                <small>Quebec</small>
+              </label>
+            </div>
+          </fieldset>
+
+          <label class="option-toggle">
+            <span>
+              <strong>Add sales tax</strong>
+              <small id="tax-description">GST + PST · 12%</small>
+            </span>
+            <input id="include-tax" type="checkbox" checked />
+          </label>
+
+          <label class="option-toggle">
+            <span>
+              <strong>Restaurant meal</strong>
+              <small id="restaurant-description">Off · regular purchase</small>
+            </span>
+            <input id="restaurant-mode" type="checkbox" />
+          </label>
+          <div class="tip-option" id="tip-option" hidden>
+            <label for="tip-percent">Tip added to the pre-tax price</label>
+            <select id="tip-percent" name="tip-percent">
+              <option value="0">None</option>
+              <option value="15">15%</option>
+              <option value="18" selected>18%</option>
+              <option value="20">20%</option>
+            </select>
+          </div>
+
+          <output class="result" aria-live="polite">
+            <span class="result-label">Estimated total</span>
+            <strong id="result-amount">—</strong>
+            <span class="result-detail" id="result-detail">No tax or tip added</span>
+            <span class="result-total" id="result-total">Total: $0.00</span>
+          </output>
+
+          <aside class="province-info" aria-live="polite">
+            <strong id="province-info-title">Tax basics in British Columbia</strong>
+            <span id="province-info-text">
+              Basic groceries are tax-free. Most meals, coffee, chips and candy have 5% GST only. Soda uses the regular 12% sales tax.
+            </span>
+          </aside>
+        </div>
+
+        <footer>
+          <p class="rate-status" id="rate-status">
+            <span aria-hidden="true"></span>
+            <span id="rate-status-text">Fetching today’s exchange rate…</span>
+          </p>
+          <p>Mixed baskets can have different tax rates. Check your receipt for the final amount.</p>
+        </footer>
+      </section>
+    </main>
+    <script type="module" src="/src/main.js"></script>
   </body>
 </html>
