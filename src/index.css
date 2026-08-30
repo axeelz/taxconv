@@ -289,7 +289,7 @@ select {
   line-height: 1;
   letter-spacing: -0.045em;
   font-variant-numeric: tabular-nums;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 
 .result-detail,
@@ -297,6 +297,7 @@ select {
   color: #6e6e73;
   font-size: 0.8rem;
   font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
 }
 
 .result-total {
